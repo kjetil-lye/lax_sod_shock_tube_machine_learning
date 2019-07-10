@@ -1,0 +1,6 @@
+[submodule "lax_sod_tube"]
+	path = lax_sod_tube
+	url = git@github.com:kjetil-lye/lax_sod_tube.git
+[submodule "learning_airfoils"]
+	path = learning_airfoils
+	url = https://github.com/kjetil-lye/learning_airfoils.git
