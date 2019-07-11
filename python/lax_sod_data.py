@@ -64,3 +64,11 @@ def get_lax_sod_data_mc():
     mc_params, mc_params = get_lax_sod_data_mc_inner()
     qmc_params, qmc_values = get_lax_sod_data_inner()
     return mc_params, mc_params, qmc_params, qmc_values
+
+
+def make_folders():
+    folders = ['img', 'img_tikz', 'tables', 'results']
+
+    for folder in folders:
+        if not os.path.exists(folder):
+            os.mkdir(folder)

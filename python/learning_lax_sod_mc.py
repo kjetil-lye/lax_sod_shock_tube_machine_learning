@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 from machine_learning import *
 from notebook_network_size import find_best_network_size_notebook, try_best_network_sizes
 from train_single_network import train_single_network
-from lax_sod_data import get_lax_sod_data
+from lax_sod_data import get_lax_sod_data, make_folders
 
 import os
 os.environ["CUDA_DEVICE_ORDER"] = "PCI_BUS_ID"   # see issue #152
@@ -29,6 +29,8 @@ def get_lax_sod_network():
     return [12, 12, 10, 12, 10, 12, 10, 10, 12,1]
 
 if __name__ == '__main__':
+    make_folders()
+
     import argparse
 
     parser = argparse.ArgumentParser(description='Compute airfoil case (with QMC points)')
