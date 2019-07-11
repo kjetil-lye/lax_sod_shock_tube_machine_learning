@@ -44,7 +44,7 @@ if __name__ == '__main__':
     lax_sod_network = get_lax_sod_network()
 
 
-    parameters, data_per_func, parameters_mc, data_per_func_mc = get_lax_sod_data()
+    parameters, data_per_func, parameters_qmc, data_per_func_qmc = get_lax_sod_data_mc()
 
 
 
@@ -55,7 +55,7 @@ if __name__ == '__main__':
         if functional_name is  None or (force_name.lower() == functional_name.lower()):
             train_single_network(parameters=parameters,
                                  samples=data_per_func[force_name],
-                                 base_title='Lax Sod Tube Sobol %s' % force_name,
+                                 base_title='Lax Sod Tube MC %s' % force_name,
                                  network = airfoils_network,
-                                 monte_carlo_parameters = parameters_mc,
-                                 monte_carlo_values = data_per_func_mc[force_name])
+                                 monte_carlo_parameters = parameters_qmc,
+                                 monte_carlo_values = data_per_func_qmc[force_name])
