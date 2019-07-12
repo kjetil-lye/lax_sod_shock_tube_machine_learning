@@ -1,6 +1,9 @@
 import os
 import numpy as np
 
+def get_lax_sod_network():
+    return [12, 12, 10, 12, 10, 12, 10, 10, 12,1]
+
 def get_lax_sod_data_inner():
 
     data_path = os.environ.get("LAX_SOD_REPO_PATH", "../lax_sod_tube")
@@ -10,8 +13,7 @@ def get_lax_sod_data_inner():
 
 
 
-    forces = np.array(os.path.join(data_path, "functionals/average_functionals_sobol_4096.txt"))
-
+    forces = np.loadtxt(os.path.join(data_path, "functionals/average_functionals_sobol_2048.txt"))
 
 
     data_per_func = {}
@@ -43,7 +45,7 @@ def get_lax_sod_data_mc_inner():
 
 
 
-    forces = np.array(os.path.join(data_path, "functionals/average_functionals_mc_4096.txt"))
+    forces = np.loadtxt(os.path.join(data_path, "functionals/average_functionals_mc_2048.txt"))
 
 
 
@@ -57,13 +59,13 @@ def get_lax_sod_data_mc_inner():
 
     for n, force_name in enumerate(force_names):
         data_per_func[force_name] = forces[:, n]
-
+    
     return mc_points, data_per_func
 def get_lax_sod_data_mc():
 
-    mc_params, mc_params = get_lax_sod_data_mc_inner()
+    mc_params, mc_values = get_lax_sod_data_mc_inner()
     qmc_params, qmc_values = get_lax_sod_data_inner()
-    return mc_params, mc_params, qmc_params, qmc_values
+    return mc_params, mc_values, qmc_params, qmc_values
 
 
 def make_folders():
