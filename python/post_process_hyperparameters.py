@@ -562,8 +562,11 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
                                 else:
                                     errors_local_network_size[depth][width].append(1)
 
-
+                
                 depths = np.array(sorted([k for k in errors_local_network_size.keys()]))
+                if len(depths) == 0:
+                    print("len(depths)=0")
+                    continue
                 widths = np.array(sorted([k for k in errors_local_network_size[depths[0]].keys()]))
 
 
