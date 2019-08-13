@@ -942,7 +942,7 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
                                                     if constant <= 10 and constant >= 1:
                                                         constant_latex = str(constant)
                                                     else:
-                                                        power = int(np.log10(constant))
+                                                        power = (np.log10(constant))
 
                                                         r = constant / 10**(power-1)
 
