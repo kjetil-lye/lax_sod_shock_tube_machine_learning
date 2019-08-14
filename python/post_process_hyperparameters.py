@@ -1237,6 +1237,12 @@ def compare_two_sets(functional, *, data1, title1, data2, title2, main_title):
 
                 source_names = [k for k in sources.keys()]
                 if True:
+                    any_empty = False
+                    for source in source_names:
+                        if len(errors_local[source]) == 0:
+                            any_empty = True
+                    if any_empty:
+                        continue
                     min_value = np.amin([np.amin(errors_local[source]) for source in source_names])
                     max_value = np.amax([np.amax(errors_local[source]) for source in source_names])
                     number_in_each_str = ""
