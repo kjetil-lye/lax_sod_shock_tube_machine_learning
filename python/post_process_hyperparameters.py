@@ -534,10 +534,17 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
                 for configuration in data['configurations']:
                     ts = int(configuration['settings']['train_size'])
                     if ts == train_size:
-                        errors_local.append(configuration['results']['best_network']['algorithms'][data_source]['ml'][tactic][error])
+                        error_local = configuration['results']['best_network']['algorithms'][data_source]['ml'][tactic][error]
+                        
+                        if not np.isnan(error_local):
+                            errors_local.append(error_local)
                         if not get_regularization_size(configuration) in errors_local_regularization.keys():
                             errors_local_regularization[get_regularization_size(configuration)] = []
-                        errors_local_regularization[get_regularization_size(configuration)].append(configuration['results']['best_network']['algorithms'][data_source]['ml'][tactic][error])
+                            
+                        if not np.isnan(error_local)
+                            errors_local_regularization[get_regularization_size(configuration)].append(error_local)
+                            
+                            
                         competitor[error][n] = get_dict_path(configuration, competitor_keys[error])
                         has_extra_competitor = error in extra_competitor_keys.keys()
                         if error in extra_competitor_keys.keys():
