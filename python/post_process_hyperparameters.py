@@ -541,7 +541,7 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
                         if not get_regularization_size(configuration) in errors_local_regularization.keys():
                             errors_local_regularization[get_regularization_size(configuration)] = []
                             
-                        if not np.isnan(error_local)
+                        if not np.isnan(error_local):
                             errors_local_regularization[get_regularization_size(configuration)].append(error_local)
                             
                             
