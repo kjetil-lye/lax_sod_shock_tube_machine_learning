@@ -57,5 +57,6 @@ if __name__ == '__main__':
                                  samples=data_per_func[force_name],
                                  base_title='Lax Sod Tube MC %s' % force_name,
                                  network = lax_sod_network,
+                                 sampling_method='MC',
                                  monte_carlo_parameters = parameters_qmc,
                                  monte_carlo_values = data_per_func_qmc[force_name])
