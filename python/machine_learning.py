@@ -34,7 +34,6 @@ from keras.callbacks import EarlyStopping
 import keras
 import matplotlib
 import matplotlib.pyplot as plt
-import netCDF4
 import os.path
 import scipy
 import scipy.stats
@@ -367,7 +366,7 @@ def get_network(parameters, data, *, network_information, output_information):
             plt.xlabel('Epochs')
             plt.ylabel('Loss')
             plt.title("Training and validation loss\n%s\n(epochs=%d)" % (title, epochs))
-            showAndSave('dummy')
+            showAndSave(f'dummy_{trylearn}')
 
         if not DISABLE_NP_DATA_OUTPUT:
             np.save("results/" + showAndSave.prefix + "training_losses_%d.npy" % trylearn, hist.history['loss'])
