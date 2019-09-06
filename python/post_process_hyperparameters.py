@@ -537,7 +537,10 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
                         error_local = configuration['results']['best_network']['algorithms'][data_source]['ml'][tactic][error]
                         
                         if not np.isnan(error_local):
+
                             errors_local.append(error_local)
+                        else:
+                            print("error_local is nan")
                         if not get_regularization_size(configuration) in errors_local_regularization.keys():
                             errors_local_regularization[get_regularization_size(configuration)] = []
                             
@@ -562,8 +565,10 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
 
                             error_at_size = size_configuration['results']['best_network']['algorithms'][data_source]['ml'][tactic][error]
                             if not np.isnan(error_at_size):
+
                                 errors_local_network_size[depth][width].append(error_at_size)
                             else:
+                                print("error_at_size is nan")
                                 if 'speedup' in error:
                                     errors_local_network_size[depth][width].append(0.00001)
                                 else:
@@ -571,81 +576,79 @@ def plot_as_training_size(functional, data, title="all configurations", only_net
 
                 
                 depths = np.array(sorted([k for k in errors_local_network_size.keys()]))
-                if len(depths) == 0:
-                    print("len(depths)=0")
-                    continue
-                widths = np.array(sorted([k for k in errors_local_network_size[depths[0]].keys()]))
+                if len(depths) > 0:
+                    widths = np.array(sorted([k for k in errors_local_network_size[depths[0]].keys()]))
 
 
-                errors_per_width = []
+                    errors_per_width = []
 
 
-                for width in widths:
-                    errors_per_width.append([])
-                    for depth in depths:
-                        errors_per_width[-1].extend(errors_local_network_size[depth][width])
-
-
-
-
-                errors_per_depth = []
-                for depth in depths:
-                    errors_per_depth.append([])
                     for width in widths:
-                        errors_per_depth[-1].extend(errors_local_network_size[depth][width])
+                        errors_per_width.append([])
+                        for depth in depths:
+                            errors_per_width[-1].extend(errors_local_network_size[depth][width])
 
 
 
 
-                errors_per_depth = np.array(errors_per_depth)
-                errors_per_width = np.array(errors_per_width)
+                    errors_per_depth = []
+                    for depth in depths:
+                        errors_per_depth.append([])
+                        for width in widths:
+                            errors_per_depth[-1].extend(errors_local_network_size[depth][width])
 
 
-                if train_size == 128:
-                    plt.figure()
-
-                    plt.loglog(widths, np.mean(errors_per_width, axis=1), '-o', label='DNN selected retraining', basex=2, basey=2)
-                    plt.loglog(widths, np.max(errors_per_width, axis=1), 'v', markersize=12, label='Max', basex=2)
-                    plt.loglog(widths, np.min(errors_per_width, axis=1), '^', markersize=12, label='Min', basey=2)
-                    plt.xlabel('Network width')
-                    plt.ylabel(names[error])
-                    plt.grid(True)
-                    plt.legend()
-                    plot_info.legendLeft()
-                    if 'prediction' in error.lower():
-                        plot_info.set_percentage_ticks(plt.gca().yaxis)
-                    plt.title("{error} for {functional} as a function of width\nConfigurations: {title}\nUsing {train_size} samples\nTactic: {tactic}\nConfigurations per width: {configs_per_width}".format(error=names[error],
-                                                                                                                                                              functional=functional, title=title, train_size=train_size, tactic=tactic,
-                                                                                                                                                              configs_per_width = errors_per_width.shape[1]
-                                                                                                                                                              ))
-                    if only_network_sizes:
-                        plot_info.savePlot("size_width_{error}_{functional}_{title}_{train_size}_{tactic}".format(error=error,
-                                                                                                        functional=functional, title=title, train_size=train_size, tactic=tactic
-                                                                                                        ))
 
 
-                    plt.close()
+                    errors_per_depth = np.array(errors_per_depth)
+                    errors_per_width = np.array(errors_per_width)
 
-                    plt.figure()
-                    plt.loglog(depths, np.mean(errors_per_depth, axis=1), '-o', label='DNN selected retraining', basex=2, basey=2)
-                    plt.loglog(depths, np.max(errors_per_depth, axis=1), 'v', markersize=12, label='Max', basex=2, basey=2)
-                    plt.loglog(depths, np.min(errors_per_depth, axis=1), '^', markersize=12, label='Min', basex=2, basey=2)
-                    plt.xlabel('Network depth')
-                    plt.ylabel(names[error])
-                    if 'prediction' in error.lower():
-                        plot_info.set_percentage_ticks(plt.gca().yaxis)
-                    plt.grid(True)
-                    plt.title("{error} for {functional} as a function of depth\nConfigurations: {title}\nUsing {train_size} samples\nTactic: {tactic}\nconfigs_per_depth = {configs_per_depth}".format(error=names[error],
-                                                                                                                                                              functional=functional, title=title, train_size=train_size, tactic=tactic,
-                                                                                                                                                              configs_per_depth=errors_per_depth.shape[1]
-                    ))
-                    plot_info.legendLeft()
-                    if only_network_sizes:
-                        plot_info.savePlot("size_depth_{error}_{functional}_{title}_{train_size}_{tactic}".format(error=error,
-                                                                                                           functional=functional, title=title, train_size=train_size, tactic=tactic
-                                                                                                           ))
 
-                    plt.close()
+                    if train_size == 128:
+                        plt.figure()
+
+                        plt.loglog(widths, np.mean(errors_per_width, axis=1), '-o', label='DNN selected retraining', basex=2, basey=2)
+                        plt.loglog(widths, np.max(errors_per_width, axis=1), 'v', markersize=12, label='Max', basex=2)
+                        plt.loglog(widths, np.min(errors_per_width, axis=1), '^', markersize=12, label='Min', basey=2)
+                        plt.xlabel('Network width')
+                        plt.ylabel(names[error])
+                        plt.grid(True)
+                        plt.legend()
+                        plot_info.legendLeft()
+                        if 'prediction' in error.lower():
+                            plot_info.set_percentage_ticks(plt.gca().yaxis)
+                            plt.title("{error} for {functional} as a function of width\nConfigurations: {title}\nUsing {train_size} samples\nTactic: {tactic}\nConfigurations per width: {configs_per_width}".format(error=names[error],
+                                                                                                                                                                                                                     functional=functional, title=title, train_size=train_size, tactic=tactic,
+                                                                                                                                                                                                                     configs_per_width = errors_per_width.shape[1]
+                            ))
+                        if only_network_sizes:
+                            plot_info.savePlot("size_width_{error}_{functional}_{title}_{train_size}_{tactic}".format(error=error,
+                                                                                                                      functional=functional, title=title, train_size=train_size, tactic=tactic
+                            ))
+
+
+                        plt.close()
+
+                        plt.figure()
+                        plt.loglog(depths, np.mean(errors_per_depth, axis=1), '-o', label='DNN selected retraining', basex=2, basey=2)
+                        plt.loglog(depths, np.max(errors_per_depth, axis=1), 'v', markersize=12, label='Max', basex=2, basey=2)
+                        plt.loglog(depths, np.min(errors_per_depth, axis=1), '^', markersize=12, label='Min', basex=2, basey=2)
+                        plt.xlabel('Network depth')
+                        plt.ylabel(names[error])
+                        if 'prediction' in error.lower():
+                            plot_info.set_percentage_ticks(plt.gca().yaxis)
+                            plt.grid(True)
+                            plt.title("{error} for {functional} as a function of depth\nConfigurations: {title}\nUsing {train_size} samples\nTactic: {tactic}\nconfigs_per_depth = {configs_per_depth}".format(error=names[error],
+                                                                                                                                                                                                               functional=functional, title=title, train_size=train_size, tactic=tactic,
+                                                                                                                                                                                                               configs_per_depth=errors_per_depth.shape[1]
+                            ))
+                            plot_info.legendLeft()
+                        if only_network_sizes:
+                            plot_info.savePlot("size_depth_{error}_{functional}_{title}_{train_size}_{tactic}".format(error=error,
+                                                                                                                      functional=functional, title=title, train_size=train_size, tactic=tactic
+                            ))
+
+                        plt.close()
 
                 plt.figure(10*(len(tactics)+1))
                 plt.hist(errors_local, bins=20)
